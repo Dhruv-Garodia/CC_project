@@ -1,0 +1,26 @@
+FROM python:3.9-slim-buster
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev gcc
+
+# Create app directory
+WORKDIR /app
+
+# Copy requirements.txt and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy app files
+COPY . .
+
+# Expose port for app
+EXPOSE 8929
+
+# Set environment variables
+ENV MYSQL_DATABASE=<hostel>
+ENV MYSQL_USER=<root>
+ENV MYSQL_PASSWORD=<>
+ENV MYSQL_HOST=<localhost>
+
+# Start app
+CMD streamlit run app.py --server.port 8929 --server.enableCORS false
